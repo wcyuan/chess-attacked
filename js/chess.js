@@ -664,7 +664,8 @@ var Chess = function(fen) {
     return output;
   }
 
-  function attacked(color, square) {
+  function count_attacked(color, square) {
+    var num = 0;
     for (var i = SQUARES.a8; i <= SQUARES.h1; i++) {
       /* did we run off the end of the board */
       if (i & 0x88) { i += 7; continue; }
@@ -679,15 +680,18 @@ var Chess = function(fen) {
       if (ATTACKS[index] & (1 << SHIFTS[piece.type])) {
         if (piece.type === PAWN) {
           if (difference > 0) {
-            if (piece.color === WHITE) return true;
+            if (piece.color === WHITE) num += 1;
           } else {
-            if (piece.color === BLACK) return true;
+            if (piece.color === BLACK) num += 1;
           }
           continue;
         }
 
         /* if the piece is a knight or a king */
-        if (piece.type === 'n' || piece.type === 'k') return true;
+        if (piece.type === 'n' || piece.type === 'k') {
+	    num += 1;
+	    continue;
+	}
 
         var offset = RAYS[index];
         var j = i + offset;
@@ -698,11 +702,15 @@ var Chess = function(fen) {
           j += offset;
         }
 
-        if (!blocked) return true;
+        if (!blocked) num += 1;
       }
     }
 
-    return false;
+    return num;
+  }
+
+  function attacked(color, square) {
+    return count_attacked(color, square) != 0;
   }
 
   function king_attacked(color) {
@@ -1565,8 +1573,11 @@ var Chess = function(fen) {
       }
 
       return move_history;
-    }
+    },
 
+    count_attacked: function (color, square) {
+      return count_attacked(color, SQUARES[square]);
+    }
   };
 };
 
