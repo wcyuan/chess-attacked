@@ -1,12 +1,12 @@
 //
 // Start from http://chessboardjs.com/examples#5003
 //
-// use:
+// in chess.js, add:
 //   count_attacked(color, square) in chess.js which is a modified function
 //   which counts the number of pieces of a given color attacking a given
 //   square.
 //
-// todo:
+// then make these changes:
 //   attackNumber(square): see how many white pieces attack it and how many
 //   black pieces attack it, and return nwhite-nblack
 //
@@ -20,7 +20,7 @@
 //   attacked number, and colors accordingly.  call this in onDrop.
 //
 
-//;(function() {
+;(function() {
 'use strict';
 
 var game = new Chess();
@@ -49,11 +49,12 @@ var colorSquare = function(square, num) {
   }
   var background;
 
-  var color = num.toString() + num.toString();
+  var color = ((15-(num*2))).toString(16);
+  color += color;
   if (black) {
-    background = '#' + color + '0000';
+    background = '#' + color + 'ffff';
   } else {
-    background = '#00' + color + '00';
+    background = '#ff' + color + 'ff';
   }
 
   squareEl.css('background', background);
@@ -81,8 +82,10 @@ var cfg = {
   draggable: true,
   position: 'start',
   onSnapEnd: onSnapEnd,
+  dropOffBoard: 'trash',
+  sparePieces: true,
 };
 
 board = new ChessBoard('board', cfg);
 updateAttacked();
-//})();
+})();
