@@ -6,5 +6,5 @@ is not being attacked, or if it is attacked the same number of
 times by white and black, then give it the normal color
 (which is sort of beige).
 
-https://cdn.rawgit.com/wcyuan/chess-attacked/master/chess.html
+https://wcyuan.github.io/chess-attacked/chess.html
 
